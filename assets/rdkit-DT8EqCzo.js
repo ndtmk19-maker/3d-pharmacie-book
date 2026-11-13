@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./RDKit_minimal-CUVhFB9-.js","./chunk-B3K2TuZy.js"])))=>i.map(i=>d[i]);
+import{n as e}from"./chunk-B3K2TuZy.js";import{t}from"./preload-helper-xBbMyY7u.js";var n=null;function r(){return n??=(async()=>{let[n,{default:r}]=await Promise.all([t(()=>import(`./RDKit_minimal-CUVhFB9-.js`).then(t=>e(t.default,1)),__vite__mapDeps([0,1]),import.meta.url),t(()=>import(`./RDKit_minimal-DtkqBM-O.js`),[],import.meta.url)]);return(n.default??n??window.initRDKitModule)({locateFile:()=>r})})(),n}export{r as loadRDKit};

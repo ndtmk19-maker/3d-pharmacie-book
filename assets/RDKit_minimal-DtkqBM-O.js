@@ -1,0 +1,1 @@
+var e=``+new URL(`RDKit_minimal-DVYqe7MX.wasm`,import.meta.url).href;export{e as default};
