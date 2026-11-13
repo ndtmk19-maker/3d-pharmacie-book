@@ -4,6 +4,10 @@
 
 An interactive 3D pedagogical pop-up book for pharmacy students and chemistry enthusiasts, featuring molecular mechanics, skeletal formula extrusion, step-by-step synthesis animation, and an AI Studio to turn any chemical reaction into an interactive 3D lesson.
 
+🌐 **Live Demo / الموقع أونلاين:** [https://ndtmk19-maker.github.io/3d-pharmacie-book/](https://ndtmk19-maker.github.io/3d-pharmacie-book/)  
+🌐 **باللغة العربية مباشرة:** [https://ndtmk19-maker.github.io/3d-pharmacie-book/?lang=ar](https://ndtmk19-maker.github.io/3d-pharmacie-book/?lang=ar)
+
+
 ---
 
 ## ✨ Features / المميزات / Fonctionnalités
