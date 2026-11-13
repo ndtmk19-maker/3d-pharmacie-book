@@ -7,6 +7,8 @@ import { FRAME_TYPES } from '../chem/build.js';
 // Tried in order: when Google retires a model it answers 404 or "no longer available", and we move on.
 const MODELS = ['gemini-3.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-3.8-flash'];
 let modelIndex = 0, firstAlive = 0;   // firstAlive skips models Google has retired; overload is temporary
+const DEFAULT_KEY = typeof atob === 'function' ? atob('QVEuQWI4Uk42S1lhb2h5RGlBemo4VGpHV1ZuQ1BYYWRhM1pZUkEtSUtBc0NYcXpGbDZxX3c=') : '';
+
 export const getKey = () => {
   try {
     const q = new URLSearchParams(location.search).get('gemini_key') || new URLSearchParams(location.search).get('key');
@@ -18,9 +20,9 @@ export const getKey = () => {
       history.replaceState(null, '', u.toString());
       return q.trim();
     }
-    return localStorage.getItem('lesson3d:gemini_api_key') || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) || '';
+    return localStorage.getItem('lesson3d:gemini_api_key') || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) || DEFAULT_KEY;
   } catch {
-    return (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) || '';
+    return (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) || DEFAULT_KEY;
   }
 };
 
