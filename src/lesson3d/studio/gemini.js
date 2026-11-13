@@ -7,8 +7,31 @@ import { FRAME_TYPES } from '../chem/build.js';
 // Tried in order: when Google retires a model it answers 404 or "no longer available", and we move on.
 const MODELS = ['gemini-3.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-3.8-flash'];
 let modelIndex = 0, firstAlive = 0;   // firstAlive skips models Google has retired; overload is temporary
-const KEY = import.meta.env.VITE_GEMINI_API_KEY;
-export const hasKey = () => Boolean(KEY);
+export const getKey = () => {
+  try {
+    const q = new URLSearchParams(location.search).get('gemini_key') || new URLSearchParams(location.search).get('key');
+    if (q) {
+      localStorage.setItem('lesson3d:gemini_api_key', q.trim());
+      const u = new URL(location.href);
+      u.searchParams.delete('key');
+      u.searchParams.delete('gemini_key');
+      history.replaceState(null, '', u.toString());
+      return q.trim();
+    }
+    return localStorage.getItem('lesson3d:gemini_api_key') || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) || '';
+  } catch {
+    return (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) || '';
+  }
+};
+
+export const setKey = (k) => {
+  try {
+    if (k && k.trim()) localStorage.setItem('lesson3d:gemini_api_key', k.trim());
+    else localStorage.removeItem('lesson3d:gemini_api_key');
+  } catch {}
+};
+
+export const hasKey = () => Boolean(getKey());
 const LANG_NAME = { fr: 'French', ar: 'Modern Standard Arabic', en: 'English' };
 
 const S = { type: 'STRING' };
@@ -151,7 +174,7 @@ async function request(model, { system: sys, contents, schema }, onText, withThi
       ...(withThinking ? { thinkingConfig: thinking(model) } : {}) },
   });
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:${onText ? 'streamGenerateContent?alt=sse' : 'generateContent'}`;
-  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': KEY }, body, signal });
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': getKey() }, body, signal });
   kick();
   if (!res.ok) {
     const j = await res.json().catch(() => ({}));
@@ -196,7 +219,7 @@ async function request(model, { system: sys, contents, schema }, onText, withThi
 // skeleton), the lesson is accepted and the problems are kept in data.warnings.
 // onStage('ask' | 'retry' | 'check' | 'busy' | 'switch' | 'progress', arg)
 export async function generate({ text, image, lang = 'fr' }, validate, onStage = () => {}) {
-  if (!KEY) throw fail('nokey', 'no key');
+  if (!hasKey()) throw fail('nokey', 'no key');
   modelIndex = Math.min(firstAlive, MODELS.length - 1);
   const user = { role: 'user', parts: [] };
   if (image) user.parts.push({ inlineData: { mimeType: image.mime, data: image.base64 } });
@@ -226,7 +249,7 @@ export async function generate({ text, image, lang = 'fr' }, validate, onStage =
 
 // Translate a list of short texts (all the words of a lesson) in one small request.
 export async function translateTexts(items, from, to) {
-  if (!KEY) throw fail('nokey', 'no key');
+  if (!hasKey()) throw fail('nokey', 'no key');
   modelIndex = Math.min(firstAlive, MODELS.length - 1);
   const schema = { type: 'OBJECT', properties: { items: { type: 'ARRAY', items: S } }, required: ['items'] };
   const sys = `Translate each item of the JSON array from ${LANG_NAME[from]} to ${LANG_NAME[to]} for university pharmacy students. Keep chemical names correct in the target language, keep formulas, SMILES, symbols such as C*, Cα, arrows and numbers unchanged. Return {"items": [...]} with exactly ${items.length} items in the same order.`;
