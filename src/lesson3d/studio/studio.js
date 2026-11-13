@@ -63,16 +63,6 @@ export function mountStudio() {
           <div class="full" hidden><img alt=""><button type="button" class="rm">${esc(L('Retirer', 'إزالة', 'Remove'))}</button></div>
         </div>
 
-        <div class="key-field" style="margin: 12px 0; padding: 10px; background: rgba(0,0,0,0.03); border-radius: 8px; border: 1px dashed #bbb;">
-          <details ${hasKey() ? '' : 'open'}>
-            <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #444;">🔑 ${esc(L('Clé API Gemini (pour l’atelier)', 'مفتاح Gemini API (لورشة التوليد)', 'Gemini API Key (for studio)'))}</summary>
-            <div style="display: flex; gap: 8px; margin-top: 8px;">
-              <input type="password" id="geminiKey" style="flex: 1; padding: 7px 10px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;" placeholder="${esc(L('Collez votre clé API Gemini ici…', 'الصق مفتاح Gemini API هنا…', 'Paste your Gemini API key here…'))}" value="${esc(getKey())}">
-              <button type="button" id="saveKeyBtn" style="padding: 7px 14px; font-size: 13px; background: #2f7bff; color: #fff; border: none; border-radius: 4px; cursor: pointer;">${esc(L('Enregistrer', 'حفظ', 'Save'))}</button>
-            </div>
-          </details>
-        </div>
-
         <div class="go">
           <button type="submit" class="primary">${esc(L('Générer la leçon 3D', 'أنشئ الدرس ثلاثي الأبعاد', 'Generate the 3D lesson'))}</button>
           <span class="quota"></span>
@@ -138,15 +128,6 @@ export function mountStudio() {
     root.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => { deleteLesson(b.dataset.del); showList(); }));
   };
   showQuota(); showList();
-
-  const keyInput = $('#geminiKey'), saveKeyBtn = $('#saveKeyBtn');
-  if (saveKeyBtn && keyInput) {
-    saveKeyBtn.addEventListener('click', () => {
-      setKey(keyInput.value);
-      showQuota();
-      alert(L('Clé enregistrée avec succès !', 'تم حفظ المفتاح بنجاح!', 'Key saved successfully!'));
-    });
-  }
 
   // --- generation ---
   const stage = (s, state) => {
