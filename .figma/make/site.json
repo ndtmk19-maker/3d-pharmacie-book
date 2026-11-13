@@ -1,0 +1,12 @@
+{
+  "description": "Leçon interactive en 3D : la synthèse de la kétamine en quatre étapes, en français, arabe ou anglais.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  },
+  "title": "Synthèse de la kétamine · leçon 3D",
+  "language": "fr"
+}
