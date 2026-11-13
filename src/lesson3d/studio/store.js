@@ -22,6 +22,5 @@ export function updateLesson(id, fn) {
 }
 export function deleteLesson(id) { write(KEY, read(KEY, []).filter((l) => l.id !== id)); }
 
-const today = () => new Date().toISOString().slice(0, 10);
-export function quotaLeft() { const q = read(QUOTA, {}); return q.date === today() ? Math.max(0, DAILY_LIMIT - q.n) : DAILY_LIMIT; }
-export function useQuota() { const q = read(QUOTA, {}); write(QUOTA, { date: today(), n: (q.date === today() ? q.n : 0) + 1 }); }
+export function quotaLeft() { return Infinity; }
+export function useQuota() {}

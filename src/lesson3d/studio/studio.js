@@ -112,11 +112,8 @@ export function mountStudio() {
 
   // --- quota and saved lessons ---
   const showQuota = () => {
-    const left = quotaLeft();
-    $('.quota').textContent = hasKey()
-      ? L(`${left} / ${DAILY_LIMIT} générations restantes aujourd’hui`, `متبقٍ اليوم ${left} من ${DAILY_LIMIT} عمليات توليد`, `${left} of ${DAILY_LIMIT} generations left today`)
-      : L('Clé Gemini manquante', 'مفتاح Gemini غير موجود', 'Gemini key missing');
-    $('.primary').disabled = !hasKey() || left <= 0;
+    $('.quota').textContent = '';
+    $('.primary').disabled = !hasKey();
   };
   const showList = () => {
     const items = listLessons();
@@ -145,7 +142,6 @@ export function mountStudio() {
     e.preventDefault();
     const text = $('#rx').value;
     if (!text.trim() && !image) { fail(L('Écrivez une réaction ou ajoutez une image.', 'اكتب تفاعلاً أو أضف صورة.', 'Type a reaction or add an image.')); return; }
-    if (quotaLeft() <= 0) { fail(L('Limite du jour atteinte.', 'تم بلوغ الحد اليومي.', 'Daily limit reached.')); return; }
     $('.err').hidden = true;
     $('.primary').disabled = true;
     $('.stages').hidden = false;
